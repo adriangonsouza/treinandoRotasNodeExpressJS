@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/open-iconic@1.1.1/font/css/open-iconic-bootstrap.min.css">
+    <title>ToDo</title>
+</head>
+
+<body>
+    <div class="all-container">
+        <div class="inputs-container">
+            <input type="text" id="texto" placeholder="Insira sua nova tarefa">
+            <button id="incluir">
+                <i class="oi oi-plus"></i>
+            </button>
+            <input type="text" id="buscar" placeholder="Pesquisar">
+        </div>
+        <div id="addTexto"></div>
+    </div>
+
+    <script>
+        let add = document.getElementById("incluir");
+        let texto1 = document.getElementById("texto");
+        let addTexto1 = document.getElementById("addTexto");
+        let lista = [];
+
+        if (localStorage.getItem("crudData")) {
+            lista = JSON.parse(localStorage.getItem("crudData"));
+            atualizarParagrafos();
+        }
+
+        add.addEventListener('click', function () {
+            lista.push(texto1.value);
+            atualizarParagrafos();
+            texto1.value = "";
+            
+        });
+
+        function atualizarParagrafos() {
+            addTexto1.innerHTML = "";
+            buscar.value = "";
+
+            localStorage.setItem("crudData", JSON.stringify(lista));
+
+            lista.forEach(function (item, index) {
+                let textItem = document.createElement("div");
+                textItem.className = "text-item";
+                textItem.innerHTML = `
+                    <span>${item}</span>
+                    <button class="editar" data-index="${index}"><i class="oi oi-pencil"></i></button>
+                    <button class="excluir" data-index="${index}"><i class="oi oi-trash"></i></button>
+                `;
+                addTexto1.appendChild(textItem);
+            });
+
+            const editarButtons = document.querySelectorAll(".editar");
+            editarButtons.forEach(function (editarButton) {
+                editarButton.addEventListener("click", function () {
+                    const index = parseInt(editarButton.getAttribute("data-index"));
+                    const novoTexto = prompt("Editar texto:", lista[index]);
+                    if (novoTexto !== null) {
+                        lista[index] = novoTexto;
+                        atualizarParagrafos();
+                    }
+                });
+            });
+
+            const excluirButtons = document.querySelectorAll(".excluir");
+            excluirButtons.forEach(function (excluirButton) {
+                excluirButton.addEventListener("click", function () {
+                    const index = parseInt(excluirButton.getAttribute("data-index"));
+                    lista.splice(index, 1);
+                    atualizarParagrafos();
+                });
+            });
+        }
+
+        document.addEventListener('DOMContentLoaded', function () {
+            const pesquisar = document.getElementById("buscar");
+
+            pesquisar.addEventListener('input', function () {
+                const pesquisarPalavra = pesquisar.value.toLowerCase();
+                const tarefas = document.querySelectorAll(".text-item");
+
+                tarefas.forEach(function (tarefa) {
+                    const textoTarefa = tarefa.querySelector("span").textContent.toLowerCase();
+                    if (textoTarefa.includes(pesquisarPalavra)) {
+                        tarefa.style.display = 'block';
+                    } else {
+                        tarefa.style.display = 'none';
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+
+</html>

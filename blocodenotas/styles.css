@@ -1,0 +1,46 @@
+header {
+    text-align: center;
+}
+
+#btn-criando-formulario,
+#enviar-fechar-formulario {
+    display: block;
+}
+
+.formulario-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+}
+
+.criando-formulario-tela {
+    display: flex;
+    flex-direction: column;
+}
+
+.criando-formulario-tela #titulo-tarefa,
+.criando-formulario-tela #descricao-tarefa,
+.criando-formulario-tela #data-finalizacao-tarefa,
+.criando-formulario-tela #enviar-fechar-formulario {
+    margin-top: 20px;
+}
+
+.cards-nota {
+    width: 200px;
+    height: auto;
+    background-color: silver;
+    word-wrap: break-word;
+    margin: 10px;
+    padding: 10px;
+}
+
+.cards-nota h4 {
+    text-align: center;
+}
+
+#exibir-notas {
+    margin-top: 25px;
+    display: flex;
+}

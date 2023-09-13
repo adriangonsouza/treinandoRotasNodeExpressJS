@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>Jogo da Velha</title>
+  <style>
+    .board {
+      display: grid;
+      grid-template-columns: repeat(3, 100px);
+      grid-gap: 2px;
+      margin: 20px auto;
+    }
+
+    .cell {
+      width: 100px;
+      height: 100px;
+      font-size: 36px;
+      text-align: center;
+      vertical-align: middle;
+      border: 1px solid #000;
+      cursor: pointer;
+    }
+  </style>
+</head>
+
+<body>
+  <h1>Jogo da Velha</h1>
+  <div class="board" id="board"></div>
+  <p id="winner"></p>
+
+  <script>
+
+    let tabuleiro = document.getElementById("board");
+    let juntandoTabuleiro = "";
+    juntandoTabuleiro2 = "";
+
+    for(let i=0;i<3;i++){
+      for(let j=0;j<3;j++){
+        juntandoTabuleiro += `<div class="cell" onclick="play(${i}, ${j})"></div>`;
+      }
+      juntandoTabuleiro2 += juntandoTabuleiro;
+      juntandoTabuleiro = "";
+    }
+    tabuleiro.innerHTML = juntandoTabuleiro2;
+
+    const board = [
+      ['', '', ''],
+      ['', '', ''],
+      ['', '', '']
+    ];
+
+    let currentPlayer = 'X';
+    let gameOver = false;
+
+    function checkWinner() {
+
+      // for (let i = 0; i < 3; i++) {
+      //   if (
+      //     board[i][0] === currentPlayer &&
+      //     board[i][1] === currentPlayer &&
+      //     board[i][2] === currentPlayer
+      //   ) {
+      //     return true;
+      //   }
+      //   if (
+      //     board[0][i] === currentPlayer &&
+      //     board[1][i] === currentPlayer &&
+      //     board[2][i] === currentPlayer
+      //   ) {
+      //     return true;
+      //   }
+      // }
+      // if (
+      //   board[0][0] === currentPlayer &&
+      //   board[1][1] === currentPlayer &&
+      //   board[2][2] === currentPlayer
+      // ) {
+      //   return true;
+      // }
+      // if (
+      //   board[0][2] === currentPlayer &&
+      //   board[1][1] === currentPlayer &&
+      //   board[2][0] === currentPlayer
+      // ) {
+      //   return true;
+      // }
+      // return false;
+    }
+
+    function checkTie() {
+      for (let i = 0; i < 3; i++) {
+        for (let j = 0; j < 3; j++) {
+          if (board[i][j] === '') {
+            return false;
+          }
+        }
+      }
+      return true;
+    }
+
+    function play(row, col) {
+      if (!gameOver && board[row][col] === '') {
+        board[row][col] = currentPlayer;
+        document.getElementById('board').children[row * 3 + col].innerHTML = currentPlayer;
+
+        if (checkWinner()) {
+          document.getElementById('winner').innerHTML = currentPlayer + ' venceu!';
+          gameOver = true;
+        } else if (checkTie()) {
+          document.getElementById('winner').innerHTML = 'Empate!';
+          gameOver = true;
+        } else {
+          currentPlayer = currentPlayer === 'X' ? 'O' : 'X';
+        }
+      }
+    }
+  </script>
+</body>
+
+</html>
